@@ -10,10 +10,12 @@ import json
 import os
 from datetime import datetime
 
-timeframe = '2005-12'
+timeframe = '2011-08'
 sql_transaction = []
+start_row = 0
+cleanup = 1000000
 
-connection = sqlite3.connect('{}2.db'.format(timeframe))
+connection = sqlite3.connect('{}.db'.format(timeframe))
 c = connection.cursor()
 
 def create_table():
@@ -107,39 +109,46 @@ if __name__ == '__main__':
     #print (file_name)
     #'J:/chatdata/reddit_data/{}/RC_{}'.format(timeframe.split('-')[0],timeframe), buffering=1000
     with open(file_name, buffering=1000) as f:
-        for row in f:    
-            print (row)
+        for row in f:
+            #print(row)
             row_counter += 1
-            row = json.loads(row)
-            parent_id = row['parent_id']
-            body = format_data(row['body'])
-            created_utc = row['created_utc']
-            score = row['score']
-            comment_id = row['author']
-            subreddit = row['subreddit']
-            parent_data = find_parent(parent_id)
-            if score >= 2:
-                existing_comment_score = find_existing_score(parent_id)   
-                if existing_comment_score:
-                    if score > existing_comment_score:
-                         if acceptable(body):
-                            sql_insert_replace_comment(comment_id,parent_id,parent_data,body,subreddit,created_utc,score)
 
-                else:
-                    if acceptable(body):
-                        if parent_data:
-                            sql_insert_has_parent(comment_id,parent_id,parent_data,body,subreddit,created_utc,score)
-                            paired_rows += 1
-                        else:
-                            sql_insert_no_parent(comment_id,parent_id,body,subreddit,created_utc,score)
+            if row_counter > start_row:
+                try:
+                    row = json.loads(row)
+                    parent_id = row['parent_id'].split('_')[1]
+                    body = format_data(row['body'])
+                    created_utc = row['created_utc']
+                    score = row['score']                  
+                    comment_id = row['id']               
+                    subreddit = row['subreddit']
+                    parent_data = find_parent(parent_id)
+                    
+                    existing_comment_score = find_existing_score(parent_id)
+                    if existing_comment_score:
+                        if score > existing_comment_score:
+                            if acceptable(body):
+                                sql_insert_replace_comment(comment_id,parent_id,parent_data,body,subreddit,created_utc,score)
+                                
+                    else:
+                        if acceptable(body):
+                            if parent_data:
+                                if score >= 2:
+                                    sql_insert_has_parent(comment_id,parent_id,parent_data,body,subreddit,created_utc,score)
+                                    paired_rows += 1
+                            else:
+                                sql_insert_no_parent(comment_id,parent_id,body,subreddit,created_utc,score)
+                except Exception as e:
+                    print(str(e))
                             
             if row_counter % 100000 == 0:
-                print('Total Rows Read: {}, Paired Rows: {}, Time: {}'.format(row_counter, paired_rows, str(datetime.now())))                
-                
-            if row_counter % cleanup == 0:
-                print("Cleanin up!")
-                sql = "DELETE FROM parent_reply WHERE parent IS NULL"
-                c.execute(sql)
-                connection.commit()
-                c.execute("VACUUM")
-                connection.commit()
+                print('Total Rows Read: {}, Paired Rows: {}, Time: {}'.format(row_counter, paired_rows, str(datetime.now())))
+
+            if row_counter > start_row:
+                if row_counter % cleanup == 0:
+                    print("Cleanin up!")
+                    sql = "DELETE FROM parent_reply WHERE parent IS NULL"
+                    c.execute(sql)
+                    connection.commit()
+                    c.execute("VACUUM")
+                    connection.commit()
