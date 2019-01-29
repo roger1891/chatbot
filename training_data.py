@@ -8,7 +8,7 @@ Created on Sun Jan 27 23:52:00 2019
 import sqlite3
 import pandas as pd
 
-timeframes = ['2015-05']
+timeframes = ['2011-08']
 
 for timeframe in timeframes:
     connection = sqlite3.connect('{}.db'.format(timeframe))
