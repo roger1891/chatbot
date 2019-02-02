@@ -1,0 +1,13 @@
+# log_file=model/log_1549000544
+# Start step 2000, lr 0.001, Fri Feb  1 14:26:07 2019
+  step 2100 lr 0.001 step-time 20.02s wps 0.30K ppl 108.22 gN 7.54 bleu 0.00, Fri Feb  1 14:59:29 2019
+  step 2200 lr 0.001 step-time 15.98s wps 0.38K ppl 104.76 gN 7.36 bleu 0.00, Fri Feb  1 15:26:07 2019
+  step 2300 lr 0.001 step-time 16.04s wps 0.37K ppl 104.42 gN 7.43 bleu 0.00, Fri Feb  1 15:52:51 2019
+  step 2400 lr 0.001 step-time 18.40s wps 0.33K ppl 102.96 gN 7.84 bleu 0.00, Fri Feb  1 16:23:31 2019
+  step 2500 lr 0.001 step-time 18.09s wps 0.33K ppl 99.35 gN 7.37 bleu 0.00, Fri Feb  1 16:53:41 2019
+  step 2600 lr 0.001 step-time 18.60s wps 0.32K ppl 101.07 gN 7.32 bleu 0.00, Fri Feb  1 17:24:40 2019
+  step 2700 lr 0.001 step-time 24.08s wps 0.25K ppl 99.19 gN 7.38 bleu 0.00, Fri Feb  1 18:04:48 2019
+  step 2800 lr 0.001 step-time 25.07s wps 0.24K ppl 97.42 gN 7.64 bleu 0.00, Fri Feb  1 18:46:36 2019
+  step 2900 lr 0.001 step-time 19.22s wps 0.32K ppl 96.16 gN 7.55 bleu 0.00, Fri Feb  1 19:18:38 2019
+  step 3000 lr 0.001 step-time 18.28s wps 0.33K ppl 95.35 gN 7.45 bleu 0.00, Fri Feb  1 19:49:06 2019
+  step 3100 lr 0.001 step-time 18.02s wps 0.33K ppl 93.21 gN 7.40 bleu 0.00, Fri Feb  1 20:19:51 2019
